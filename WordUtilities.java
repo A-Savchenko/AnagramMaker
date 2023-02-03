@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 /**
  *	Provides utilities for word games:
@@ -17,6 +18,8 @@ public class WordUtilities {
     private String[] words;        // the dictionary of words
     // File containing dictionary of almost 100,000 words.
     private  String WORD_FILE = "wordList.txt";
+    List<String> listOfStrings;
+
 
     /**
      *	Determines if a word's characters match a group of letters
@@ -69,9 +72,10 @@ public class WordUtilities {
         sm.mergeSort(words);
     }
 
-    /* Constructor */
+    /* Constructor for initializing the arraylist of Strings taken in from the txt file of words
+    * */
     public WordUtilities() {
-        words = new String[100000];
+        listOfStrings = new ArrayList<String>();
     }
 
     /**
@@ -79,9 +83,12 @@ public class WordUtilities {
      */
     private void loadWords() {
         Scanner sc = FileUtils.openToRead(WORD_FILE);
-        for (int i = 0; i < words.length && sc.hasNext(); i++) {
-            words[i] = sc.next();
+
+        while (sc.hasNext()) {
+            listOfStrings.add(sc.next());
         }
+
+        words = listOfStrings.toArray(new String[0]);
     }
 
     /**
@@ -219,6 +226,8 @@ public class WordUtilities {
         WORD_FILE = file_name;
         loadWords();
     }
+
+    public String[] getwords() {
+        return this.words;
+    }
 }
-
-

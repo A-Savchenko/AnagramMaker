@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,63 +11,49 @@ import java.util.List;
  */
 public class SortMethods {
 
-    public static void mergeSort(String[] arr){
-        mergeSort(arr,0,arr.length - 1);
-    }
+    /**
+     * Method that sorts an array of String using the merge sort technique
+     * @param names array of Strings that is inputted to be sorted
+     */
+    public static void mergeSort(String[] names) {
+        if (names.length >= 2) {
+            String[] left = new String[names.length / 2];
+            String[] right = new String[names.length - names.length / 2];
 
-    public static void mergeSort(String[] arr,  int l, int r)
-    {
-        if (l < r) {
-            // Find the middle point
-            int m = l + (r - l) / 2;
-
-            // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
-
-            // Merge the sorted halves
-            merge(arr, l, m, r);
-        }
-    }
-    public static void merge(String[] a, int from, int mid, int to) {
-        int n = to - from + 1;       // size of the range to be merged
-        String[] b = new String[n];   // merge both halves into a temporary array b
-        int i1 = from;               // next element to consider in the first range
-        int i2 = mid + 1;            // next element to consider in the second range
-        int j = 0;                   // next open position in b
-
-        // as long as neither i1 nor i2 past the end, move the smaller into b
-        while (i1 <= mid && i2 <= to) {
-            if (a[i1] == null) continue;
-            if (a[i2] == null) continue;
-            if (a[i1].compareTo(a[i2]) < 0) {
-                b[j] = a[i1];
-                i1++;
-            } else {
-                b[j] = a[i2];
-                i2++;
+            for (int i = 0; i < left.length; i++) {
+                left[i] = names[i];
             }
-            j++;
-        }
 
-        // note that only one of the two while loops below is executed
-        // copy any remaining entries of the first half
-        while (i1 <= mid) {
-            b[j] = a[i1];
-            i1++;
-            j++;
-        }
+            for (int i = 0; i < right.length; i++) {
+                right[i] = names[i + names.length / 2];
+            }
 
-        // copy any remaining entries of the second half
-        while (i2 <= to) {
-            b[j] = a[i2];
-            i2++;
-            j++;
+            mergeSort(left);
+            mergeSort(right);
+            merge(names, left, right);
         }
+    }
 
-        // copy back from the temporary array
-        for (j = 0; j < n; j++) {
-            a[from + j] = b[j];
+    /**
+     * Merges the two sub-arrays
+     * @param names original array of Strings
+     * @param left 'left' sub-array of Strings that was taken from the side that is less than the middle index of the
+     *             array
+     * @param right 'right' sub-array of Strings that was taken from the side that is bigger than the middle index
+     *              of the array
+     */
+    public static void merge(String[] names, String[] left, String[] right) {
+        int a = 0;
+        int b = 0;
+        for (int i = 0; i < names.length; i++) {
+            if (b >= right.length || (a < left.length && left[a].compareToIgnoreCase(right[b]) < 0)) {
+                names[i] = left[a];
+                a++;
+            } else {
+                names[i] = right[b];
+                b++;
+            }
         }
-    }//end merge
+    }
+
 }
